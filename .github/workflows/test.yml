@@ -1,12 +1,12 @@
-name: Flutter Test Workflow
+name: Flutter CI
 
 on:
     push:
-        branches:
-            - main
+        branches: [main]
+    pull_request:
 
 jobs:
-    test:
+    build:
         runs-on: ubuntu-latest
 
         steps:
@@ -16,9 +16,8 @@ jobs:
             - name: Setup Flutter
               uses: subosito/flutter-action@v2
               with:
-                  channel: stable
-                  flutter-version: 3.19.0
-                  cache: false
+                  flutter-version: "3.22.0"
+                  channel: "stable"
 
             - name: Check Flutter version
               run: flutter --version
@@ -26,5 +25,5 @@ jobs:
             - name: Install dependencies
               run: flutter pub get
 
-            - name: Analyze code
-              run: flutter analyze || true
+            - name: Analyze project
+              run: flutter analyze
