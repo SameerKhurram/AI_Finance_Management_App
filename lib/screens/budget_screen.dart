@@ -23,8 +23,22 @@ class BudgetScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('Budget & Expenses', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
-            Text('بجٹ اور اخراجات', style: TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Jameel Noori Nastaleeq')),
+            Text(
+              'Budget & Expenses',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'بجٹ اور اخراجات',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                fontFamily: 'Jameel Noori Nastaleeq',
+              ),
+            ),
           ],
         ),
       ),
@@ -41,20 +55,34 @@ class BudgetScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Total Budget', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                      Text('PKR ${formatter.format(financeProvider.totalBudget)}', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                      const Text(
+                        'Total Budget',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                      Text(
+                        'PKR ${formatter.format(financeProvider.totalBudget)}',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text('Budget Left', style: TextStyle(color: Colors.grey, fontSize: 14)),
+                      const Text(
+                        'Budget Left',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
                       Text(
-                        'PKR ${formatter.format(financeProvider.budgetLeft)}', 
+                        'PKR ${formatter.format(financeProvider.budgetLeft)}',
                         style: TextStyle(
-                          fontSize: 20, 
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: financeProvider.budgetLeft < 0 ? Colors.red : const Color(0xFF00BFA5)
+                          color: financeProvider.budgetLeft < 0
+                              ? Colors.red
+                              : const Color(0xFF00BFA5),
                         ),
                       ),
                     ],
@@ -67,14 +95,22 @@ class BudgetScreen extends StatelessWidget {
             Expanded(
               child: transactions.isEmpty
                   ? const Center(
-                      child: Text('No expenses recorded yet.', style: TextStyle(color: Colors.grey)),
+                      child: Text(
+                        'No expenses recorded yet.',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
                       itemCount: transactions.length,
                       itemBuilder: (context, index) {
                         final tx = transactions[index];
-                        return _buildTransactionItem(context, tx, financeProvider, formatter);
+                        return _buildTransactionItem(
+                          context,
+                          tx,
+                          financeProvider,
+                          formatter,
+                        );
                       },
                     ),
             ),
@@ -84,7 +120,12 @@ class BudgetScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionItem(BuildContext context, TransactionModel tx, FinanceProvider provider, NumberFormat formatter) {
+  Widget _buildTransactionItem(
+    BuildContext context,
+    TransactionModel tx,
+    FinanceProvider provider,
+    NumberFormat formatter,
+  ) {
     IconData categoryIcon = Icons.category;
     Color iconColor = Colors.grey;
 
@@ -121,7 +162,10 @@ class BudgetScreen extends StatelessWidget {
           backgroundColor: iconColor.withAlpha((255 * 0.1).toInt()),
           child: Icon(categoryIcon, color: iconColor),
         ),
-        title: Text(tx.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          tx.title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         subtitle: Text(
           '${tx.category} • ${DateFormat.yMMMd().format(tx.date)}',
           style: const TextStyle(color: Colors.grey, fontSize: 12),
@@ -131,7 +175,10 @@ class BudgetScreen extends StatelessWidget {
           children: [
             Text(
               '-PKR ${formatter.format(tx.amount)}',
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
             ),
             PopupMenuButton<String>(
               onSelected: (value) {
@@ -146,7 +193,10 @@ class BudgetScreen extends StatelessWidget {
               },
               itemBuilder: (BuildContext context) => [
                 const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Text('Delete', style: TextStyle(color: Colors.red)),
+                ),
               ],
             ),
           ],
@@ -155,11 +205,15 @@ class BudgetScreen extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context, TransactionModel tx, FinanceProvider provider) {
+  void _showEditDialog(
+    BuildContext context,
+    TransactionModel tx,
+    FinanceProvider provider,
+  ) {
     final amountController = TextEditingController(text: tx.amount.toString());
     final titleController = TextEditingController(text: tx.title);
     String selectedCategory = tx.category;
-    
+
     showDialog(
       context: context,
       builder: (ctx) {
@@ -173,18 +227,35 @@ class BudgetScreen extends StatelessWidget {
                   children: [
                     TextField(
                       controller: amountController,
-                      decoration: const InputDecoration(labelText: 'Amount (PKR)'),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      decoration: const InputDecoration(
+                        labelText: 'Amount (PKR)',
+                      ),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                     ),
                     const SizedBox(height: 12),
+
+                    // ✅ FIXED HERE
                     DropdownButtonFormField<String>(
-                      initialValue: ['Food', 'Travel', 'Shopping', 'Bills', 'Other'].contains(selectedCategory) ? selectedCategory : 'Other',
-                      items: ['Food', 'Travel', 'Shopping', 'Bills', 'Other'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      value:
+                          [
+                            'Food',
+                            'Travel',
+                            'Shopping',
+                            'Bills',
+                            'Other',
+                          ].contains(selectedCategory)
+                          ? selectedCategory
+                          : 'Other',
+                      items: ['Food', 'Travel', 'Shopping', 'Bills', 'Other']
+                          .map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          })
+                          .toList(),
                       onChanged: (val) {
                         if (val != null) {
                           setState(() {
@@ -194,10 +265,14 @@ class BudgetScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(labelText: 'Category'),
                     ),
+
                     const SizedBox(height: 12),
+
                     TextField(
                       controller: titleController,
-                      decoration: const InputDecoration(labelText: 'Description'),
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
+                      ),
                     ),
                   ],
                 ),
@@ -209,7 +284,8 @@ class BudgetScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    final newAmount = double.tryParse(amountController.text) ?? tx.amount;
+                    final newAmount =
+                        double.tryParse(amountController.text) ?? tx.amount;
                     final updatedTx = tx.copyWith(
                       amount: newAmount,
                       category: selectedCategory,
@@ -222,7 +298,7 @@ class BudgetScreen extends StatelessWidget {
                 ),
               ],
             );
-          }
+          },
         );
       },
     );
