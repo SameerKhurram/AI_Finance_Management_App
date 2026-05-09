@@ -15,3 +15,28 @@ The application "records user's daily transactions", "categorize expenses" and "
 A key feature of this app is its "AI-based assistant", which can answer user queries, provide financial advice and generate personalized recommendations. It also include features like expense prediction, budget alerts and goal tracking to enhance user experience.
 
 
+## Screenshots
+
+### CI Workflow Success
+![CI](screenshots/ci-success.png)
+
+### CD Workflow Success
+![CD](screenshots/cd-success.png)
+
+### Firebase Project
+![Overview](screenshots/firebase-project.png)
+
+### Firebase Init
+![Init](screenshots/firebase-init.png)
+
+### Firebase Serve
+![Serve](screenshots/firebase-serve.png)
+
+### Firebase Deploy
+![Deploy](screenshots/firebase-deploy.png)
+
+### Workflow Logs
+![Logs](screenshots/workflow-logs.png)
+
+
+
